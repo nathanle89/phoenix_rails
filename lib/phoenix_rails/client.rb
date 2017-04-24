@@ -1,19 +1,18 @@
-ire 'signature'
+require 'signature'
 
 module PhoenixRails
   class Client
-    attr_accessor :scheme, :host, :port, :app_id, :key, :secret
+    attr_accessor :scheme, :host, :port, :key, :secret
     attr_writer :connect_timeout, :send_timeout, :receive_timeout, :keep_alive_timeout
 
 
     def initialize(options = {})
       options = {
         :scheme => 'http',
-        :host => 'api.phoenixapp.com',
         :port => 80,
       }.merge(options)
-      @scheme, @host, @port, @app_id, @key, @secret = options.values_at(
-        :scheme, :host, :port, :app_id, :key, :secret
+      @scheme, @host, @port, @key, @secret = options.values_at(
+        :scheme, :host, :port, :key, :secret
       )
 
       # Default timeouts
@@ -26,7 +25,6 @@ module PhoenixRails
     def url=(url)
       uri = URI.parse(url)
       @scheme = uri.scheme
-      @app_id = uri.path.split('/').last
       @key    = uri.user
       @secret = uri.password
       @host   = uri.host
@@ -62,7 +60,7 @@ module PhoenixRails
     end
 
     def channel(channel_name)
-      raise ConfigurationError, 'Missing client configuration: please check that key, secret and app_id are configured.' unless configured?
+      raise ConfigurationError, 'Missing client configuration: please check that key, secret are configured.' unless configured?
       Channel.new(url, channel_name, self)
     end
 
@@ -74,6 +72,10 @@ module PhoenixRails
 
     def trigger(channels, event_name, data, params = {})
       post('/events', trigger_params(channels, event_name, data, params))
+    end
+
+    def authentication_token
+      Signature::Token.new(@key, @secret)
     end
 
     # @private Construct a net/http http client
@@ -116,7 +118,7 @@ module PhoenixRails
     end
 
     def configured?
-      host && scheme && key && secret && app_id
+      host && scheme && key && secret
     end
 
   end

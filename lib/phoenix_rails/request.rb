@@ -35,7 +35,7 @@ module PhoenixRails
 
       body = response.body ? response.body.chomp : nil
 
-      return handle_response(response.code.to_i, body)
+      handle_response(response.code.to_i, body)
     end
 
     private
