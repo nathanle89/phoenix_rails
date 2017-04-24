@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'phoenix_rails'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2017-04-22'
   s.summary     = 'Rails gem for Phoenix integration'
   s.description = 'Gem for pushing event to a Phoenix server for realtime'
