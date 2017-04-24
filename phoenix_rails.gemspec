@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
   ]
   s.add_runtime_dependency 'httpclient', '~> 2.7'
   s.add_runtime_dependency 'multi_json', '~> 1.0'
-  s.homepage    = 'http://rubygems.org/gems/phoenix_rails'
+  s.homepage    = 'https://github.com/nathanle89/phoenix_rails'
   s.license       = 'MIT'
 end
