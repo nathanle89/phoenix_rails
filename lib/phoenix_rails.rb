@@ -1,4 +1,4 @@
-class PhoenixRails
+module PhoenixRails
   class Error < RuntimeError; end
   class AuthenticationError < Error; end
   class ConfigurationError < Error; end
