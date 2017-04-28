@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'phoenix_rails'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.date        = '2017-04-22'
   s.summary     = 'Rails gem for Phoenix integration'
   s.description = 'Gem for pushing event to a Phoenix server for realtime'
@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   ]
   s.add_runtime_dependency 'httpclient', '~> 2.7'
   s.add_runtime_dependency 'multi_json', '~> 1.0'
+  s.add_runtime_dependency 'ruby', '~> 2.0.0'
   s.homepage    = 'https://github.com/nathanle89/phoenix_rails'
   s.license       = 'MIT'
 end
