@@ -34,7 +34,7 @@ module PhoenixRails
     def encrypted=(boolean)
       @scheme = boolean ? 'https' : 'http'
       # Configure port if it hasn't already been configured
-      @port = boolean ? 443 : 80
+      @port = boolean ? 443 : @port
     end
 
     def encrypted?
