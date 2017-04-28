@@ -18,6 +18,8 @@ module PhoenixRails
     def_delegators :default_client, :channels, :trigger
     def_delegators :default_client, :channel, :[]
 
+    attr_writer :logger
+
     def logger
       @logger ||= begin
         log = Logger.new($stdout)
