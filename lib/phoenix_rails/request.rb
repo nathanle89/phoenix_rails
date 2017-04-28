@@ -8,13 +8,8 @@ module PhoenixRails
 
     def initialize(client, verb, uri, params, body = nil)
       @client, @verb, @uri = client, verb, uri
-      @head = {}
-
+      @head = { 'Content-Type' => 'application/json'}
       @body = body
-      if body
-        params[:body_md5] = Digest::MD5.hexdigest(body)
-        @head['Content-Type'] = 'application/json'
-      end
 
       request = Signature::Request.new(verb.to_s.upcase, uri.path, params)
       request.sign(client.authentication_token)

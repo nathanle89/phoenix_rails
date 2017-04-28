@@ -36,6 +36,7 @@ class PhoenixRails
   end
 end
 
-require 'pusher/channel'
-require 'pusher/request'
-require 'pusher/resource'
+require 'phoenix_rails/channel'
+require 'phoenix_rails/request'
+require 'phoenix_rails/resource'
+require 'phoenix_rails/client'
