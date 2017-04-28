@@ -1,5 +1,3 @@
-require 'signature'
-
 module PhoenixRails
   class Client
     attr_accessor :scheme, :host, :port, :key, :secret
@@ -72,10 +70,6 @@ module PhoenixRails
 
     def trigger(channels, event_name, data, params = {})
       post('/events', trigger_params(channels, event_name, data, params))
-    end
-
-    def authentication_token
-      Signature::Token.new(@key, @secret)
     end
 
     # @private Construct a net/http http client

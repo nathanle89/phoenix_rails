@@ -10,7 +10,7 @@ module PhoenixRails
     def_delegators :default_client, :scheme, :host, :port, :key, :secret
     def_delegators :default_client, :scheme=, :host=, :port=, :key=, :secret=
 
-    def_delegators :default_client, :authentication_token, :url
+    def_delegators :default_client, :url
     def_delegators :default_client, :encrypted=, :url=
     def_delegators :default_client, :timeout=, :connect_timeout=, :send_timeout=, :receive_timeout=, :keep_alive_timeout=
 

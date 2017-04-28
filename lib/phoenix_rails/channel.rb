@@ -48,62 +48,6 @@ module PhoenixRails
       @client.get("/channels/#{name}/users")[:users]
     end
 
-    # Compute authentication string required as part of the authentication
-    # endpoint response. Generally the authenticate method should be used in
-    # preference to this one
-    #
-    # @param socket_id [String] Each PhoenixRails socket connection receives a
-    #   unique socket_id. This is sent from phoenix.js to your server when
-    #   channel authentication is required.
-    # @param custom_string [String] Allows signing additional data
-    # @return [String]
-    #
-    def authentication_string(socket_id, custom_string = nil)
-      validate_socket_id(socket_id)
-
-      unless custom_string.nil? || custom_string.kind_of?(String)
-        raise Error, 'Custom argument must be a string'
-      end
-
-      string_to_sign = [socket_id, name, custom_string].
-        compact.map(&:to_s).join(':')
-      PhoenixRails.logger.debug "Signing #{string_to_sign}"
-      token = @client.authentication_token
-      digest = OpenSSL::Digest::SHA256.new
-      signature = OpenSSL::HMAC.hexdigest(digest, token.secret, string_to_sign)
-
-      return "#{token.key}:#{signature}"
-    end
-
-    # Generate the expected response for an authentication endpoint.
-    #
-    # @example Private channels
-    #   render :json => PhoenixRails['private-my_channel'].authenticate(params[:socket_id])
-    #
-    # @example Presence channels
-    #   render :json => PhoenixRails['private-my_channel'].authenticate(params[:socket_id], {
-    #     :user_id => current_user.id, # => required
-    #     :user_info => { # => optional - for example
-    #       :name => current_user.name,
-    #       :email => current_user.email
-    #     }
-    #   })
-    #
-    # @param socket_id [String]
-    # @param custom_data [Hash] used for example by private channels
-    #
-    # @return [Hash]
-    #
-    # @private Custom data is sent to server as JSON-encoded string
-    #
-    def authenticate(socket_id, custom_data = nil)
-      custom_data = MultiJson.encode(custom_data) if custom_data
-      auth = authentication_string(socket_id, custom_data)
-      r = {:auth => auth}
-      r[:channel_data] = custom_data if custom_data
-      r
-    end
-
     private
 
     def validate_socket_id(socket_id)

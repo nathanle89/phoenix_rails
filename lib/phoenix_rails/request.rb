@@ -1,4 +1,4 @@
-require 'signature'
+require 'jwt'
 require 'digest/md5'
 require 'multi_json'
 
@@ -11,9 +11,8 @@ module PhoenixRails
       @head = { 'Content-Type' => 'application/json'}
       @body = body
 
-      request = Signature::Request.new(verb.to_s.upcase, uri.path, params)
-      request.sign(client.authentication_token)
-      @params = request.signed_params
+      token = JWT.encode @body, client.secret, 'HS256'
+      @head[:Authorization] = "Bearer #{token}"
     end
 
     def send
