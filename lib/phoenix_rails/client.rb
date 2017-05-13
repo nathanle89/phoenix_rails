@@ -1,6 +1,6 @@
 module PhoenixRails
   class Client
-    attr_accessor :scheme, :host, :port, :key, :secret
+    attr_accessor :scheme, :host, :port, :secret
     attr_writer :connect_timeout, :send_timeout, :receive_timeout, :keep_alive_timeout
 
 
@@ -9,8 +9,8 @@ module PhoenixRails
         :scheme => 'http',
         :port => 80,
       }.merge(options)
-      @scheme, @host, @port, @key, @secret = options.values_at(
-        :scheme, :host, :port, :key, :secret
+      @scheme, @host, @port, @secret = options.values_at(
+        :scheme, :host, :port, :secret
       )
 
       # Default timeouts
@@ -23,7 +23,6 @@ module PhoenixRails
     def url=(url)
       uri = URI.parse(url)
       @scheme = uri.scheme
-      @key    = uri.user
       @secret = uri.password
       @host   = uri.host
       @port   = uri.port
@@ -58,7 +57,7 @@ module PhoenixRails
     end
 
     def channel(channel_name)
-      raise ConfigurationError, 'Missing client configuration: please check that key, secret are configured.' unless configured?
+      raise ConfigurationError, 'Missing client configuration: please check that secret is configured.' unless configured?
       Channel.new(url, channel_name, self)
     end
 
@@ -112,7 +111,7 @@ module PhoenixRails
     end
 
     def configured?
-      host && scheme && key && secret
+      host && scheme && secret
     end
 
   end
