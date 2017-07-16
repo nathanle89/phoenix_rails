@@ -20,11 +20,12 @@ module PhoenixRails
       @keep_alive_timeout = 30
     end
 
-    def base_url
+    def url(path=nil)
       URI::Generic.build({
         :scheme => @scheme,
         :host => @host,
-        :port => @port
+        :port => @port,
+        :path => "/api/realtime#{path}"
       })
     end
 
@@ -58,7 +59,7 @@ module PhoenixRails
 
     def channel(channel_name)
       raise ConfigurationError, 'Missing client configuration: please check that secret is configured.' unless configured?
-      Channel.new(base_url, channel_name, self)
+      Channel.new(url, channel_name, self)
     end
 
     alias :[] :channel
