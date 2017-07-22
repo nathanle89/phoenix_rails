@@ -87,7 +87,7 @@ module PhoenixRails
     def generate_authentication_token(claim = {})
       claim.merge!({ key: @key })
 
-      JWT.encode claim, @client.secret, 'HS256'
+      JWT.encode claim, @secret, 'HS256'
     end
 
     private
