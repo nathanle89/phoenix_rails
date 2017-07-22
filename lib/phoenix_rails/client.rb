@@ -1,6 +1,6 @@
 module PhoenixRails
   class Client
-    attr_accessor :scheme, :host, :port, :secret
+    attr_accessor :scheme, :host, :port, :secret, :key
     attr_writer :connect_timeout, :send_timeout, :receive_timeout, :keep_alive_timeout
 
 
@@ -9,8 +9,8 @@ module PhoenixRails
         :scheme => 'http',
         :port => 80,
       }.merge(options)
-      @scheme, @host, @port, @secret = options.values_at(
-        :scheme, :host, :port, :secret
+      @scheme, @host, @port, @secret, @key = options.values_at(
+        :scheme, :host, :port, :secret, :key
       )
 
       # Default timeouts
@@ -42,8 +42,6 @@ module PhoenixRails
     def timeout=(value)
       @connect_timeout, @send_timeout, @receive_timeout = value, value, value
     end
-
-    ## INTERACE WITH THE API ##
 
     def resource(path)
       Resource.new(self, path)
@@ -86,6 +84,12 @@ module PhoenixRails
       end
     end
 
+    def generate_authentication_token(claim = {})
+      claim.merge!({ key: @key })
+
+      JWT.encode claim, @client.secret, 'HS256'
+    end
+
     private
 
     def trigger_params(channels, event_name, data, params)
@@ -112,7 +116,7 @@ module PhoenixRails
     end
 
     def configured?
-      host && scheme && secret
+      host && scheme && secret && key
     end
 
   end

@@ -11,8 +11,7 @@ module PhoenixRails
       @head = { 'Content-Type' => 'application/json'}
       @body = body
 
-      token = JWT.encode @body, client.secret, 'HS256'
-      @head[:Authorization] = "Bearer #{token}"
+      @head[:Authorization] = "Bearer #{@client.generate_authentication_token}"
     end
 
     def send

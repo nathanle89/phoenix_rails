@@ -7,8 +7,8 @@ module PhoenixRails
   class << self
     extend Forwardable
 
-    def_delegators :default_client, :scheme, :host, :port, :secret
-    def_delegators :default_client, :scheme=, :host=, :port=, :secret=
+    def_delegators :default_client, :scheme, :host, :port, :secret, :app_id, :key
+    def_delegators :default_client, :scheme=, :host=, :port=, :secret=, :app_id=, :key=
 
     def_delegators :default_client, :url
     def_delegators :default_client, :encrypted=, :url=
